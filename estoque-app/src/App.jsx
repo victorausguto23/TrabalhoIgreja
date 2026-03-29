@@ -6,13 +6,18 @@ import HomeUsuario from "./pages/HomeUsuarios/HomeUsuario"
 
 function App() {
  const [tela, setTela] = useState("login")
+ const [usuario, setUsuario] = useState(null)
   const [produtos, setProdutos] = useState([])
   
    function adicionarProduto(novoProduto) {
-    setProdutos([...produtos, novoProduto])
-
- 
+  const produtoComPadrao = {
+    ...novoProduto,
+    quantidade: novoProduto.quantidade || 0,
+    id: Date.now()
   }
+
+ setProdutos((prev) => [...prev, produtoComPadrao])
+}
    function aumentarQuantidade(id) {
     const novaLista = produtos.map((produto) => {
       if (produto.id === id) {
@@ -22,15 +27,19 @@ function App() {
     })
     setProdutos(novaLista)
   }
-   function diminuirQuantidade(id) {
-    const novaLista = produtos.map((produto) => {
-      if (produto.id === id && produto.quantidade > 0) {
-        return { ...produto, quantidade: produto.quantidade - 1 }
-      }
-      return produto
-    })
-    setProdutos(novaLista)
-  }
+  function diminuirQuantidade(id) {
+  setProdutos((prev) =>
+    prev.map((produto) =>
+      produto.id === id
+        ? {
+            ...produto,
+            quantidade: Math.max(0, produto.quantidade - 1)
+          }
+        : produto
+    )
+  )
+}
+  
    function removerProduto(id) {
     const novaLista = produtos.filter((produto) => produto.id !== id)
     setProdutos(novaLista)
@@ -40,10 +49,16 @@ function App() {
  
  return (
      <>
-      {tela === "login" && <Login setTela={setTela} />}
+      {tela === "login" && (
+      <Login setTela={setTela} setUsuario={setUsuario}/>
+      )}
+
+
 
       {tela === "admin" && (
         <HomeAdmin
+        usuario={usuario}
+
           produtos={produtos}
           adicionarProduto={adicionarProduto}
           aumentarQuantidade={aumentarQuantidade}
@@ -54,6 +69,7 @@ function App() {
 
       {tela === "user" && (
         <HomeUsuario
+        usuario={usuario}
           produtos={produtos}
           aumentarQuantidade={aumentarQuantidade}
           diminuirQuantidade={diminuirQuantidade}
