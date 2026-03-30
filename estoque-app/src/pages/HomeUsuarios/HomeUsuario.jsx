@@ -1,4 +1,4 @@
-import ListaProdutos from "../HomeAdmin/Listaprodutos"
+import ListaProdutos from "../HomeAdmin/ListaProdutos"
 
 function HomeUsuario({produtos,aumentarQuantidade, diminuirQuantidade}){ 
   return (

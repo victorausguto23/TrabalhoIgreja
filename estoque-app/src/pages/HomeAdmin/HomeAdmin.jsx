@@ -1,48 +1,15 @@
-import { useState } from "react"
-import ListaProdutos from "./Listaprodutos"
+
+import ListaProdutos from "./ListaProdutos"
 import CadastroProduto from "./CadastroProduto"
 
 
-function HomeAdmin() {
-  const [produtos, setProdutos] = useState([])
-
-  function adicionarProduto(novoProduto) {
-    setProdutos([...produtos, novoProduto])
-  }
-
-  function aumentarQuantidade(id) {
-    const novaLista = produtos.map((produto) => {
-      if (produto.id === id) {
-        return {
-          ...produto,
-          quantidade: produto.quantidade + 1
-        }
-      }
-      return produto
-    })
-
-    setProdutos(novaLista)
-  }
-
-  function diminuirQuantidade(id) {
-    const novaLista = produtos.map((produto) => {
-      if (produto.id === id && produto.quantidade > 0) {
-        return {
-          ...produto,
-          quantidade: produto.quantidade - 1
-        }
-      }
-      return produto
-    })
-
-    setProdutos(novaLista)
-  }
-
-  function removerProduto(id) {
-    const novaLista = produtos.filter((produto) => produto.id !== id)
-    setProdutos(novaLista)
-  }
-
+function HomeAdmin({
+  produtos,
+  adicionarProduto,
+  aumentarQuantidade,
+  diminuirQuantidade,
+  removerProduto
+}) {
   return (
     <div>
       <h1>Área do Administrador</h1>
